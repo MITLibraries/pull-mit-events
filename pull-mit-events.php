@@ -152,7 +152,7 @@ function __update_post_meta( $post_id, $field_name, $value = '' )
 }
 
 
-/* Adds the admin page for pulling events manually *?
+/* Adds the admin page for pulling events manually */
 
 if ( is_admin() ){
 
