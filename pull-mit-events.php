@@ -35,15 +35,15 @@ function my_activation() {
 
 function pull_events( $confirm = false ) {
 
- 	$url = EVENTS_URL; 
+	$url = EVENTS_URL; 
 	$result = file_get_contents($url);
-    $events = json_decode($result, TRUE);
-    $jsonIterator = new RecursiveIteratorIterator(
-    new RecursiveArrayIterator($events),
+	$events = json_decode($result, TRUE);
+	$jsonIterator = new RecursiveIteratorIterator(
+	new RecursiveArrayIterator($events),
     RecursiveIteratorIterator::SELF_FIRST);
 
 	foreach ($jsonIterator as $key => $val) {
-	    if(is_array($val)) {  
+		if(is_array($val)) {  
 			$title =  $val["title"];
 			$description = $val["description_text"];
 			$start =  strtotime($val["event_instances"][0]["event_instance"]["start"]);
@@ -52,79 +52,74 @@ function pull_events( $confirm = false ) {
 			$starttime = date('h:i A', $start);
 			$enddate = date('Ymd', $end);
 			$endtime = date('h:i A', $end);
-
-			$calendar_id =  $val["event_instances"][0]["event_instance"]["id"];
+			$calendar_id =  $val["event_instances"][0]["event_instance"]["id"];	
 			$calendar_url =  $val["localist_url"];
 			$photo_url =  $val["photo_url"];
 			$category = 43;  //all news
 			$slug = str_replace(" ", "-", $title);
 
-		 	$args = array(
-		        'post_status'     => 'publish',
-		        'numberposts'	=> -1,
+			$args = array(
+				'post_status'     => 'publish',
+				'numberposts'	=> -1,
 				'post_type'		=> 'post',
 				'meta_key'		=> 'calendar_id',
 				'meta_value'	=> $calendar_id,
 		   		);
-		    query_posts( $args );
+			query_posts( $args );
 
-	   	 	if  ( have_posts() ) {
+			if  ( have_posts() ) {
 
-		    	the_post();
-		    	$post_id = wp_update_post(
-				      array(
-				      	'ID'  => get_the_ID(),
-				        'comment_status'  => 'closed',
-				        'ping_status'   => 'closed',
-				        'post_title'    => $title,
-				        'post_description'    => $description,
-
-				      ), True
-				 );
-					if (is_wp_error($post_id)) 
-				    {
-				    $errors = $post_id->get_error_messages();
-				    foreach ($errors as $error) {
-				        error_log($error);
-				        }
-				    } else { 
-				    	if ( $confirm ) { 
-				    		echo $title . ": Updated<br/>";
-				    	}
-				    	error_log($title . ": Updated");
-		    		}
-		    	
-
+				the_post();
+				$post_id = wp_update_post(
+					array(
+						'ID'  => get_the_ID(),
+						'comment_status'  => 'closed',
+						'ping_status'   => 'closed',
+						'post_title'    => $title,
+						'post_description'    => $description,
+					), True
+				);
+				if (is_wp_error($post_id)) {
+					$errors = $post_id->get_error_messages();
+					foreach ($errors as $error) {
+						error_log($error);
+					}
+				} else { 
+					if ( $confirm ) { 
+						echo $title . ": Updated<br/>";
+					}
+					error_log($title . ": Updated");
+				}
+		    
 		    } else { 
 
-					$post_id = wp_insert_post(
-				      array(
-				        'comment_status'  => 'closed',
-				        'ping_status'   => 'closed',
-				        'post_name'   => $slug,
-				        'post_title'    => $title,
-				        'post_description'    => $description,
-				        'post_status'   => 'publish',
-				        'post_type'   => 'post',
-				        'post_category' => array($category),
-				      ), True
-				 );
+		    	$post_id = wp_insert_post(
+		    		array(
+						'comment_status'  => 'closed',		
+						'ping_status'   => 'closed',
+						'post_name'   => $slug,
+						'post_title'    => $title,
+						'post_description'    => $description,
+						'post_status'   => 'publish',
+						'post_type'   => 'post',
+						'post_category' => array($category),
+					), True
+				);
 
-					if (is_wp_error($post_id)) 
-				    {
-				    $errors = $post_id->get_error_messages();
-				    foreach ($errors as $error) {
-				         error_log($error);
-				        }
-				    } else { 
-				    	if ( $confirm ) { 
-					    	echo $title . ": Inserted<br/>";
-					    }
-						error_log($title . ": Inserted");
-		    		}
-		    }
-	    	__update_post_meta( $post_id, 'event_date' , $startdate );
-	    	__update_post_meta( $post_id, 'event_start_time' , $starttime );
+				if (is_wp_error($post_id)) {
+					$errors = $post_id->get_error_messages();
+					foreach ($errors as $error) {
+						error_log($error);
+					}
+				} else { 
+					if ( $confirm ) { 
+						echo $title . ": Inserted<br/>";
+					}
+					error_log($title . ": Inserted");
+		  		}
+			}
+			__update_post_meta( $post_id, 'event_date' , $startdate );
+			__update_post_meta( $post_id, 'event_start_time' , $starttime );	
 			__update_post_meta( $post_id,  'event_end_time' , $endtime );
 			__update_post_meta( $post_id,  'is_event' , '1' );
 			__update_post_meta( $post_id,  'calendar_url' , $calendar_url );
