@@ -83,11 +83,7 @@ static function pull_events( $confirm = false ) {
 	$url = EVENTS_URL; 
 	$result = file_get_contents($url);
 	$events = json_decode($result, TRUE);
-	$jsonIterator = new RecursiveIteratorIterator(
-	new RecursiveArrayIterator($events),
-    RecursiveIteratorIterator::SELF_FIRST);
-
-	foreach ($jsonIterator as $key => $val) {
+	foreach ($events['events'] as $val) {
 		if(is_array($val)) {  
 			if (isset($val["event"]["title"])) { 
 				$title =  $val["event"]["title"];
@@ -113,7 +109,7 @@ static function pull_events( $confirm = false ) {
 				$photo_url =  $val["event"]["photo_url"];
 			} 
 			$category = 43;  //all news
-			
+
 			if (isset($calendar_id)) { 
 		
 				$args = array(
@@ -226,11 +222,11 @@ static function __update_post_meta( $post_id, $field_name, $value = '' )
 		<h2>Pull MIT Library Events</h2>
 
 		<p>
-	Example: https://calendar.mit.edu/api/2/events?pp=500&group_id=11497&exclude_type=102763&days=365<br/>
-	pp – record count  . If you don’t specify a count, by default it returns only 10<br/>
-	group_id – the id for MIT Libraries<br/>
-	exclude_type – excluding exhibits<br/>
-	days – 365 , number of days to return (always in future) . If you don’t specify this parameter, by default it returns only today
+		Example: https://calendar.mit.edu/api/2/events?pp=500&group_id=11497&exclude_type=102763&days=365<br/>
+		pp – record count  . If you don’t specify a count, by default it returns only 10<br/>
+		group_id – the id for MIT Libraries<br/>
+		exclude_type – excluding exhibits<br/>
+		days – 365 , number of days to return (always in future) . If you don’t specify this parameter, by default it returns only today
 		</p>
 		<form method="POST" action="options.php">
 
