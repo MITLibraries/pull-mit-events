@@ -83,17 +83,17 @@ static function pull_events( $confirm = false ) {
 	$url = EVENTS_URL;
 	$result = file_get_contents( $url );
 	$events = json_decode( $result, TRUE );
-	foreach ($events['events'] as $val) {
-		if(is_array( $val )) {
-			if (isset( $val['event']['title'] )) {
+	foreach ( $events['events'] as $val ) {
+		if ( is_array( $val ) ) {
+			if ( isset( $val['event']['title'] ) ) {
 				$title =  $val['event']['title'];
 				$slug = str_replace( ' ', '-', $title );
 
 			}
-			if (isset( $val['event']['description_text'] )) {
+			if ( isset( $val['event']['description_text'] ) ) {
 				$description = $val['event']['description_text'];
 			}
-			if (isset( $val['event']['event_instances'][0]['event_instance'] )) {
+			if ( isset( $val['event']['event_instances'][0]['event_instance'] ) ) {
 				$start =  strtotime( $val['event']['event_instances'][0]['event_instance']['start'] );
 				$end =  strtotime( $val['event']['event_instances'][0]['event_instance']['end'] );
 				$startdate = date( 'Ymd', $start );
@@ -102,15 +102,15 @@ static function pull_events( $confirm = false ) {
 				$endtime = date( 'h:i A', $end );
 				$calendar_id =  $val['event']['event_instances'][0]['event_instance']['id'];
 			}
-			if (isset( $val['event']['localist_url'] )) {
+			if ( isset( $val['event']['localist_url'] ) ) {
 				$calendar_url =  $val['event']['localist_url'];
 			}
-			if (isset( $val['event']['photo_url'] )) {
+			if ( isset( $val['event']['photo_url'] ) ) {
 				$photo_url =  $val['event']['photo_url'];
 			}
 			$category = 43;  //all news
 
-			if (isset( $calendar_id )) {
+			if ( isset( $calendar_id ) ) {
 
 				$args = array(
 					'post_status'     => 'publish',
@@ -121,7 +121,7 @@ static function pull_events( $confirm = false ) {
 					   );
 				query_posts( $args );
 
-				if  ( have_posts() ) {
+				if ( have_posts() ) {
 
 					the_post();
 					$post_id = wp_update_post(
@@ -133,9 +133,9 @@ static function pull_events( $confirm = false ) {
 							'post_description'    => $description,
 						), True
 					);
-					if (is_wp_error( $post_id )) {
+					if ( is_wp_error( $post_id ) ) {
 						$errors = $post_id->get_error_messages();
-						foreach ($errors as $error) {
+						foreach ( $errors as $error ) {
 							error_log( $error );
 						}
 					} else {
@@ -143,9 +143,8 @@ static function pull_events( $confirm = false ) {
 							echo $title . ': Updated<br/>';
 						}
 						error_log( $title . ': Updated' );
-					}
-
-					} else {
+					}					
+} else {
 
 					$post_id = wp_insert_post(
 						array(
@@ -160,9 +159,9 @@ static function pull_events( $confirm = false ) {
 						), True
 					);
 
-					if (is_wp_error( $post_id )) {
+					if ( is_wp_error( $post_id ) ) {
 						$errors = $post_id->get_error_messages();
-						foreach ($errors as $error) {
+						foreach ( $errors as $error ) {
 							error_log( $error );
 						}
 					} else {
@@ -180,25 +179,20 @@ static function pull_events( $confirm = false ) {
 				Pull_Events_Plugin::__update_post_meta( $post_id,  'calendar_id' , $calendar_id );
 				Pull_Events_Plugin::__update_post_meta( $post_id,  'calendar_image' , $photo_url );
 
-			}
-
-		}
+			}		
+}
 	}
 }
 
 
-static function __update_post_meta( $post_id, $field_name, $value = '' )
-{
-	if ( empty( $value ) OR ! $value )
-	{
+static function __update_post_meta( $post_id, $field_name, $value = '' ) {
+	if ( empty( $value ) OR ! $value ) {
 		delete_post_meta( $post_id, $field_name );
 	}
-	elseif ( ! get_post_meta( $post_id, $field_name ) )
-	{
+	elseif ( ! get_post_meta( $post_id, $field_name ) ) {
 		add_post_meta( $post_id, $field_name, $value );
 	}
-	else
-	{
+	else {
 		update_post_meta( $post_id, $field_name, $value );
 	}
 }
@@ -206,9 +200,9 @@ static function __update_post_meta( $post_id, $field_name, $value = '' )
 
 	function plugin_settings_page_content() {
 
-		if (isset( $_GET['action'] ) ) {
+		if ( isset( $_GET['action'] ) ) {
 
-			if ($_GET['page'] == 'pull_mit_events' && $_GET['action'] == 'pull-events' ) {
+			if ( $_GET['page'] == 'pull_mit_events' && $_GET['action'] == 'pull-events' ) {
 				 echo '<h2>Pull MIT Library Events</h2>';
 				Pull_Events_Plugin::pull_events( true );
 				exit;
