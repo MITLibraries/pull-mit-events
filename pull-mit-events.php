@@ -113,11 +113,11 @@ static function pull_events( $confirm = false ) {
 			if ( isset( $calendar_id ) ) {
 
 				$args = array(
-					'post_status'     => 'publish',
-					'numberposts'	=> -1,
-					'post_type'		=> 'post',
-					'meta_key'		=> 'calendar_id',
-					'meta_value'	=> $calendar_id,
+					'post_status' => 'publish',
+					'numberposts' => -1,
+					'post_type'   => 'post',
+					'meta_key'    => 'calendar_id',
+					'meta_value'  => $calendar_id,
 					);
 				query_posts( $args );
 
