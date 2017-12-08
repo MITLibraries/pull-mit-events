@@ -25,8 +25,8 @@ class Pull_Events_Plugin {
 
 
 public function __construct() {
-    // Hook into the admin menu
-    add_action( 'admin_menu', array( $this, 'create_plugin_settings_page' ) );
+	// Hook into the admin menu
+	add_action( 'admin_menu', array( $this, 'create_plugin_settings_page' ) );
 
 	add_action( 'daily_event_pull', 'pull_events' );
 
@@ -49,16 +49,16 @@ function my_activation() {
 
 
 public function create_plugin_settings_page() {
-    // Add the menu item and page
-    $page_title = 'Pull Events Settings Page';
-    $menu_title = 'Pull MIT Events';
-    $capability = 'manage_options';
-    $slug = 'pull_mit_events';
-    $callback = array( $this, 'plugin_settings_page_content' );
-    $icon = 'dashicons-admin-plugins';
-    $position = 100;
+	// Add the menu item and page
+	$page_title = 'Pull Events Settings Page';
+	$menu_title = 'Pull MIT Events';
+	$capability = 'manage_options';
+	$slug = 'pull_mit_events';
+	$callback = array( $this, 'plugin_settings_page_content' );
+	$icon = 'dashicons-admin-plugins';
+	$position = 100;
 
-    add_menu_page( $page_title, $menu_title, $capability, $slug, $callback, $icon, $position );
+	add_menu_page( $page_title, $menu_title, $capability, $slug, $callback, $icon, $position );
 }
 
 
@@ -118,7 +118,7 @@ static function pull_events( $confirm = false ) {
 					'post_type'		=> 'post',
 					'meta_key'		=> 'calendar_id',
 					'meta_value'	=> $calendar_id,
-			   		);
+					);
 				query_posts( $args );
 
 				if  ( have_posts() ) {
@@ -144,11 +144,11 @@ static function pull_events( $confirm = false ) {
 						}
 						error_log($title . ": Updated");
 					}
-			    
-			    } else { 
+				
+				} else { 
 
-			    	$post_id = wp_insert_post(
-			    		array(
+					$post_id = wp_insert_post(
+						array(
 							'comment_status'  => 'closed',		
 							'ping_status'   => 'closed',
 							'post_name'   => $slug,
@@ -170,7 +170,7 @@ static function pull_events( $confirm = false ) {
 							echo $title . ": Inserted<br/>";
 						}
 						error_log($title . ": Inserted");
-			  		}
+					}
 				}
 				Pull_Events_Plugin::__update_post_meta( $post_id, 'event_date' , $startdate );
 				Pull_Events_Plugin::__update_post_meta( $post_id, 'event_start_time' , $starttime );	
@@ -189,18 +189,18 @@ static function pull_events( $confirm = false ) {
 
 static function __update_post_meta( $post_id, $field_name, $value = '' )
 {
-    if ( empty( $value ) OR ! $value )
-    {
-        delete_post_meta( $post_id, $field_name );
-    }
-    elseif ( ! get_post_meta( $post_id, $field_name ) )
-    {
-        add_post_meta( $post_id, $field_name, $value );
-    }
-    else
-    {
-        update_post_meta( $post_id, $field_name, $value );
-    }
+	if ( empty( $value ) OR ! $value )
+	{
+		delete_post_meta( $post_id, $field_name );
+	}
+	elseif ( ! get_post_meta( $post_id, $field_name ) )
+	{
+		add_post_meta( $post_id, $field_name, $value );
+	}
+	else
+	{
+		update_post_meta( $post_id, $field_name, $value );
+	}
 }
 
 
@@ -234,9 +234,9 @@ static function __update_post_meta( $post_id, $field_name, $value = '' )
 		settings_fields( 'pull_mit_events' );
 		do_settings_sections( 'pull_mit_events' );
 		submit_button();
-        ?>
+		?>
 
-        </form>
+		</form>
 
 		<form method="post" action="<?php echo admin_url("admin.php?page=pull_mit_events&action=pull-events"); ?>">
 			
