@@ -144,7 +144,6 @@ static function pull_events( $confirm = false ) {
 						}
 						error_log( $title . ": Updated" );
 					}
-
 				} else {
 
 					$post_id = wp_insert_post(
@@ -174,31 +173,24 @@ static function pull_events( $confirm = false ) {
 				}
 				Pull_Events_Plugin::__update_post_meta( $post_id, 'event_date', $startdate );
 				Pull_Events_Plugin::__update_post_meta( $post_id, 'event_start_time', $starttime );
-				Pull_Events_Plugin::__update_post_meta( $post_id,  'event_end_time', $endtime );
-				Pull_Events_Plugin::__update_post_meta( $post_id,  'is_event', '1' );
-				Pull_Events_Plugin::__update_post_meta( $post_id,  'calendar_url', $calendar_url );
-				Pull_Events_Plugin::__update_post_meta( $post_id,  'calendar_id', $calendar_id );
-				Pull_Events_Plugin::__update_post_meta( $post_id,  'calendar_image', $photo_url );
+				Pull_Events_Plugin::__update_post_meta( $post_id, 'event_end_time', $endtime );
+				Pull_Events_Plugin::__update_post_meta( $post_id, 'is_event', '1' );
+				Pull_Events_Plugin::__update_post_meta( $post_id, 'calendar_url', $calendar_url );
+				Pull_Events_Plugin::__update_post_meta( $post_id, 'calendar_id', $calendar_id );
+				Pull_Events_Plugin::__update_post_meta( $post_id, 'calendar_image', $photo_url );
 
 			}
-
 		}
 	}
 }
 
 
-static function __update_post_meta( $post_id, $field_name, $value = '' )
-{
-	if ( empty( $value ) OR ! $value )
-	{
+static function __update_post_meta( $post_id, $field_name, $value = '' ) {
+	if ( empty( $value ) OR ! $value ) {
 		delete_post_meta( $post_id, $field_name );
-	}
-	elseif ( ! get_post_meta( $post_id, $field_name ) )
-	{
+	} elseif ( ! get_post_meta( $post_id, $field_name ) ) {
 		add_post_meta( $post_id, $field_name, $value );
-	}
-	else
-	{
+	} else {
 		update_post_meta( $post_id, $field_name, $value );
 	}
 }
