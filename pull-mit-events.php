@@ -171,13 +171,13 @@ static function pull_events( $confirm = false ) {
 						error_log( $title . ': Inserted' );
 					  }
 				}
-				Pull_Events_Plugin::__update_post_meta( $post_id, 'event_date' , $startdate );
-				Pull_Events_Plugin::__update_post_meta( $post_id, 'event_start_time' , $starttime );
-				Pull_Events_Plugin::__update_post_meta( $post_id,  'event_end_time' , $endtime );
-				Pull_Events_Plugin::__update_post_meta( $post_id,  'is_event' , '1' );
-				Pull_Events_Plugin::__update_post_meta( $post_id,  'calendar_url' , $calendar_url );
-				Pull_Events_Plugin::__update_post_meta( $post_id,  'calendar_id' , $calendar_id );
-				Pull_Events_Plugin::__update_post_meta( $post_id,  'calendar_image' , $photo_url );
+				Pull_Events_Plugin::__update_post_meta( $post_id, 'event_date', $startdate );
+				Pull_Events_Plugin::__update_post_meta( $post_id, 'event_start_time', $starttime );
+				Pull_Events_Plugin::__update_post_meta( $post_id, 'event_end_time', $endtime );
+				Pull_Events_Plugin::__update_post_meta( $post_id, 'is_event', '1' );
+				Pull_Events_Plugin::__update_post_meta( $post_id, 'calendar_url', $calendar_url );
+				Pull_Events_Plugin::__update_post_meta( $post_id, 'calendar_id', $calendar_id );
+				Pull_Events_Plugin::__update_post_meta( $post_id, 'calendar_image', $photo_url );
 
 			}		
 }
