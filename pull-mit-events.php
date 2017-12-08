@@ -155,7 +155,7 @@ static function pull_events( $confirm = false ) {
 							'post_description'    => $description,
 							'post_status'   => 'publish',
 							'post_type'   => 'post',
-							'post_category' => array($category),
+							'post_category' => array( $category ),
 						), true
 					);
 
