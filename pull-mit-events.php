@@ -35,7 +35,7 @@ public function __construct() {
 	register_setting( 'pull_mit_events', 'pull_url_field' );
 
 	register_activation_hook( __FILE__, 'my_activation' );
-	register_deactivation_hook( __FILE__, 'my_deactivation');
+	register_deactivation_hook( __FILE__, 'my_deactivation' );
 
 }
 
@@ -81,36 +81,36 @@ public function field_callback( $arguments ) {
 static function pull_events( $confirm = false ) {
 
 	$url = EVENTS_URL; 
-	$result = file_get_contents($url);
-	$events = json_decode($result, TRUE);
+	$result = file_get_contents( $url );
+	$events = json_decode( $result, TRUE );
 	foreach ($events['events'] as $val) {
-		if(is_array($val)) {  
-			if (isset($val['event']['title'])) { 
+		if(is_array( $val )) {  
+			if (isset( $val['event']['title'] )) { 
 				$title =  $val['event']['title'];
-				$slug = str_replace(' ', '-', $title);
+				$slug = str_replace( ' ', '-', $title );
 
 			}
-			if (isset($val['event']['description_text'])) { 
+			if (isset( $val['event']['description_text'] )) { 
 				$description = $val['event']['description_text'];
 			}
-			if (isset($val['event']['event_instances'][0]['event_instance'])) { 
-				$start =  strtotime($val['event']['event_instances'][0]['event_instance']['start']);
-				$end =  strtotime($val['event']['event_instances'][0]['event_instance']['end']);
-				$startdate = date('Ymd', $start);
-				$starttime = date('h:i A', $start);
-				$enddate = date('Ymd', $end);
-				$endtime = date('h:i A', $end);
+			if (isset( $val['event']['event_instances'][0]['event_instance'] )) { 
+				$start =  strtotime( $val['event']['event_instances'][0]['event_instance']['start'] );
+				$end =  strtotime( $val['event']['event_instances'][0]['event_instance']['end'] );
+				$startdate = date( 'Ymd', $start );
+				$starttime = date( 'h:i A', $start );
+				$enddate = date( 'Ymd', $end );
+				$endtime = date( 'h:i A', $end );
 				$calendar_id =  $val['event']['event_instances'][0]['event_instance']['id'];	
 			}
-			if (isset($val['event']['localist_url'])) { 
+			if (isset( $val['event']['localist_url'] )) { 
 				$calendar_url =  $val['event']['localist_url'];
 			}
-			if (isset($val['event']['photo_url'])) { 
+			if (isset( $val['event']['photo_url'] )) { 
 				$photo_url =  $val['event']['photo_url'];
 			} 
 			$category = 43;  //all news
 
-			if (isset($calendar_id)) { 
+			if (isset( $calendar_id )) { 
 		
 				$args = array(
 					'post_status'     => 'publish',
@@ -133,16 +133,16 @@ static function pull_events( $confirm = false ) {
 							'post_description'    => $description,
 						), True
 					);
-					if (is_wp_error($post_id)) {
+					if (is_wp_error( $post_id )) {
 						$errors = $post_id->get_error_messages();
 						foreach ($errors as $error) {
-							error_log($error);
+							error_log( $error );
 						}
 					} else { 
 						if ( $confirm ) { 
 							echo $title . ': Updated<br/>';
 						}
-						error_log($title . ': Updated');
+						error_log( $title . ': Updated' );
 					}
 			
 					} else { 
@@ -160,16 +160,16 @@ static function pull_events( $confirm = false ) {
 						), True
 					);
 
-					if (is_wp_error($post_id)) {
+					if (is_wp_error( $post_id )) {
 						$errors = $post_id->get_error_messages();
 						foreach ($errors as $error) {
-							error_log($error);
+							error_log( $error );
 						}
 					} else { 
 						if ( $confirm ) { 
 							echo $title . ': Inserted<br/>';
 						}
-						error_log($title . ': Inserted');
+						error_log( $title . ': Inserted' );
 					  }
 				}
 				Pull_Events_Plugin::__update_post_meta( $post_id, 'event_date' , $startdate );
@@ -206,11 +206,11 @@ static function __update_post_meta( $post_id, $field_name, $value = '' )
 
 	function plugin_settings_page_content() {
 
-		if (isset($_GET['action']) ) {
+		if (isset( $_GET['action'] ) ) {
 
 			if ($_GET['page'] == 'pull_mit_events' && $_GET['action'] == 'pull-events' ) {
 				 echo '<h2>Pull MIT Library Events</h2>';
-				Pull_Events_Plugin::pull_events(true);
+				Pull_Events_Plugin::pull_events( true );
 				exit;
 			}
 		}
@@ -238,7 +238,7 @@ static function __update_post_meta( $post_id, $field_name, $value = '' )
 
 		</form>
 
-		<form method="post" action="<?php echo admin_url('admin.php?page=pull_mit_events&action=pull-events'); ?>">
+		<form method="post" action="<?php echo admin_url( 'admin.php?page=pull_mit_events&action=pull-events' ); ?>">
 			
 		<h2>Do it now:</h2> 
 
