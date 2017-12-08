@@ -10,7 +10,8 @@ Version: 1.0
 defined( 'ABSPATH' ) or die();
 
 
-/* Fetch only library events and exclude exhibits.
+/*
+ Fetch only library events and exclude exhibits.
 If no days specified, only current day returned.
 If no  record count specified, only 10 records returned.
 See https://developer.localist.com/doc/api
