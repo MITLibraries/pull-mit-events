@@ -29,9 +29,11 @@ define( 'EVENTS_URL', get_option( 'pull_url_field' ) );
 class Pull_Events_Plugin {
 
 
-
+/**
+ * Constructor method
+ */
 public function __construct() {
-	// Hook into the admin menu
+	// Hook into the admin menu.
 	add_action( 'admin_menu', array( $this, 'create_plugin_settings_page' ) );
 
 	add_action( 'daily_event_pull', 'pull_events' );
@@ -45,17 +47,25 @@ public function __construct() {
 
 }
 
+/**
+ * Deactivation method (for uninstalls, etc)
+ */
 function my_deactivation() {
 	wp_clear_scheduled_hook( 'daily_event_pull' );
 }
 
+/**
+ * Activation method (for initial setup, etc)
+ */
 function my_activation() {
 	wp_schedule_event( time(), 'hourly', 'daily_event_pull' );
 }
 
-
+/**
+ * Method to create the settings page
+ */
 public function create_plugin_settings_page() {
-	// Add the menu item and page
+	// Add the menu item and page.
 	$page_title = 'Pull Events Settings Page';
 	$menu_title = 'Pull MIT Events';
 	$capability = 'manage_options';
@@ -67,23 +77,35 @@ public function create_plugin_settings_page() {
 	add_menu_page( $page_title, $menu_title, $capability, $slug, $callback, $icon, $position );
 }
 
-
-
+/**
+ * Set up sections of admin form
+ */
 function setup_sections() {
 	add_settings_section( 'url_section', 'Configure Events Pull', false, 'pull_mit_events' );
 }
 
+/**
+ * Set up fields of admin form
+ */
 public function setup_fields() {
 	add_settings_field( 'pull_url_field', 'Pull Events URL:', array( $this, 'field_callback' ), 'pull_mit_events', 'url_section' );
 }
 
-
+/**
+ * Callback function to create an individual field
+ *
+ * @param string $arguments Apparently unused.
+ */
 public function field_callback( $arguments ) {
 	echo '<input name="pull_url_field" id="pull_url_field" type="text" size="100" value="' . get_option( 'pull_url_field' ) . '" />';
 
 }
-/* Pulls events and either updates or inserts based on calendar ID field */
 
+/**
+ * Pulls events and either updates or inserts based on calendar ID field
+ *
+ * @param boolean $confirm Not sure.
+ */
 static function pull_events( $confirm = false ) {
 
 	$url = EVENTS_URL;
@@ -114,7 +136,7 @@ static function pull_events( $confirm = false ) {
 			if ( isset( $val['event']['photo_url'] ) ) {
 				$photo_url = $val['event']['photo_url'];
 			}
-			$category = 43;  // all news
+			$category = 43;  // 43 is the All News category on the News site.
 
 			if ( isset( $calendar_id ) ) {
 
@@ -190,7 +212,13 @@ static function pull_events( $confirm = false ) {
 	}
 }
 
-
+/**
+ * Method to update post meta fields
+ *
+ * @param integer $post_id The post ID.
+ * @param string  $field_name the name of the meta field to update.
+ * @param string  $value the value of the field to update.
+ */
 static function __update_post_meta( $post_id, $field_name, $value = '' ) {
 	if ( empty( $value ) || ! $value ) {
 		delete_post_meta( $post_id, $field_name );
@@ -201,7 +229,9 @@ static function __update_post_meta( $post_id, $field_name, $value = '' ) {
 	}
 }
 
-
+/**
+ * Method to display the settings form and fields on the admin menu.
+ */
 	function plugin_settings_page_content() {
 
 		if ( isset( $_GET['action'] ) ) {
