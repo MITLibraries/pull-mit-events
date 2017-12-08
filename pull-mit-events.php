@@ -188,11 +188,9 @@ static function pull_events( $confirm = false ) {
 static function __update_post_meta( $post_id, $field_name, $value = '' ) {
 	if ( empty( $value ) or ! $value ) {
 		delete_post_meta( $post_id, $field_name );
-	}
-	elseif ( ! get_post_meta( $post_id, $field_name ) ) {
+	} elseif ( ! get_post_meta( $post_id, $field_name ) ) {
 		add_post_meta( $post_id, $field_name, $value );
-	}
-	else {
+	} else {
 		update_post_meta( $post_id, $field_name, $value );
 	}
 }
