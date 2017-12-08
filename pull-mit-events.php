@@ -9,20 +9,23 @@
  * @since 1.0.0
  */
 
-defined( 'ABSPATH' ) or die();
+defined( 'ABSPATH' ) || die();
 
 
-/*
- Fetch only library events and exclude exhibits.
-If no days specified, only current day returned.
-If no  record count specified, only 10 records returned.
-See https://developer.localist.com/doc/api
-*/
+/**
+ * Fetch only library events and exclude exhibits.
+ * If no days specified, only current day returned.
+ * If no  record count specified, only 10 records returned.
+ * See https://developer.localist.com/doc/api
+ *
+ * Reference URL: https://calendar.mit.edu/api/2/events?pp=500&group_id=11497&exclude_type=102763&days=365
+ */
 define( 'EVENTS_URL', get_option( 'pull_url_field' ) );
 
 
-
-
+/**
+ * Pull_Events_Plugin is the class that controls everything.
+ */
 class Pull_Events_Plugin {
 
 
@@ -189,7 +192,7 @@ static function pull_events( $confirm = false ) {
 
 
 static function __update_post_meta( $post_id, $field_name, $value = '' ) {
-	if ( empty( $value ) or ! $value ) {
+	if ( empty( $value ) || ! $value ) {
 		delete_post_meta( $post_id, $field_name );
 	} elseif ( ! get_post_meta( $post_id, $field_name ) ) {
 		add_post_meta( $post_id, $field_name, $value );
