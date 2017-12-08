@@ -1,11 +1,13 @@
 <?php
-/*
-Plugin Name: Pull MIT Events
-Description: Pulls Events from calendar.mit.edu for the Libraries news site
-Author: Hattie Llavina
-Version: 1.0
-*/
-
+/**
+ * Plugin Name: Pull MIT Events
+ * Description: Pulls Events from calendar.mit.edu for the Libraries news site
+ * Author: Hattie Llavina
+ * Version: 1.0.0
+ *
+ * @package Pull MIT Events
+ * @since 1.0.0
+ */
 
 defined( 'ABSPATH' ) or die();
 
