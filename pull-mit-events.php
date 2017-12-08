@@ -114,10 +114,10 @@ static function pull_events( $confirm = false ) {
 
 				$args = array(
 					'post_status'     => 'publish',
-					'numberposts'	=> -1,
-					'post_type'		=> 'post',
-					'meta_key'		=> 'calendar_id',
-					'meta_value'	=> $calendar_id,
+					'numberposts'   => -1,
+					'post_type'     => 'post',
+					'meta_key'      => 'calendar_id',
+					'meta_value'    => $calendar_id,
 					   );
 				query_posts( $args );
 
@@ -143,7 +143,7 @@ static function pull_events( $confirm = false ) {
 							echo $title . ': Updated<br/>';
 						}
 						error_log( $title . ': Updated' );
-					}					
+					}                   
 } else {
 
 					$post_id = wp_insert_post(
@@ -179,7 +179,7 @@ static function pull_events( $confirm = false ) {
 				Pull_Events_Plugin::__update_post_meta( $post_id, 'calendar_id', $calendar_id );
 				Pull_Events_Plugin::__update_post_meta( $post_id, 'calendar_image', $photo_url );
 
-			}		
+			}       
 }
 	}
 }
