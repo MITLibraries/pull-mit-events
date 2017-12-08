@@ -82,7 +82,7 @@ static function pull_events( $confirm = false ) {
 
 	$url = EVENTS_URL;
 	$result = file_get_contents( $url );
-	$events = json_decode( $result, TRUE );
+	$events = json_decode( $result, true );
 	foreach ( $events['events'] as $val ) {
 		if ( is_array( $val ) ) {
 			if ( isset( $val['event']['title'] ) ) {
@@ -131,7 +131,7 @@ static function pull_events( $confirm = false ) {
 							'ping_status'   => 'closed',
 							'post_title'    => $title,
 							'post_description'    => $description,
-						), True
+						), true
 					);
 					if ( is_wp_error( $post_id ) ) {
 						$errors = $post_id->get_error_messages();
@@ -156,7 +156,7 @@ static function pull_events( $confirm = false ) {
 							'post_status'   => 'publish',
 							'post_type'   => 'post',
 							'post_category' => array($category),
-						), True
+						), true
 					);
 
 					if ( is_wp_error( $post_id ) ) {
@@ -186,7 +186,7 @@ static function pull_events( $confirm = false ) {
 
 
 static function __update_post_meta( $post_id, $field_name, $value = '' ) {
-	if ( empty( $value ) OR ! $value ) {
+	if ( empty( $value ) or ! $value ) {
 		delete_post_meta( $post_id, $field_name );
 	}
 	elseif ( ! get_post_meta( $post_id, $field_name ) ) {
