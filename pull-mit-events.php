@@ -3,7 +3,7 @@
 Plugin Name: Pull MIT Events
 Description: Pulls Events from calendar.mit.edu for the Libraries news site 
 Author: Hattie Llavina
-Version: 1.0
+Version: 1.0.1
 */
 
 
