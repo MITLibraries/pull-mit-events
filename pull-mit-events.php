@@ -80,6 +80,14 @@ public function field_callback( $arguments ) {
 
 static function pull_events( $confirm = false ) {
 
+	/**
+	 * Before we do anything, make sure our timezone is set correctly based on
+	 * the site settings. Ideally we would store times and dates in their proper
+	 * format, but it was a legacy decision that they would be stored as
+	 * strings, rather than datetimes.
+	 */
+	date_default_timezone_set( get_option( 'timezone_string' ) );
+
 	$url = EVENTS_URL; 
 	$result = file_get_contents($url);
 	$events = json_decode($result, TRUE);
@@ -88,7 +96,6 @@ static function pull_events( $confirm = false ) {
 			if (isset($val["event"]["title"])) { 
 				$title =  $val["event"]["title"];
 				$slug = str_replace(" ", "-", $title);
-
 			}
 			if (isset($val["event"]["description_text"])) { 
 				$description = $val["event"]["description_text"];
