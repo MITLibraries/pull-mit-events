@@ -101,13 +101,18 @@ static function pull_events( $confirm = false ) {
 				$description = $val["event"]["description_text"];
 			}
 			if (isset($val["event"]["event_instances"][0]["event_instance"])) { 
+				$calendar_id =  $val["event"]["event_instances"][0]["event_instance"]["id"];
 				$start =  strtotime($val["event"]["event_instances"][0]["event_instance"]["start"]);
-				$end =  strtotime($val["event"]["event_instances"][0]["event_instance"]["end"]);
 				$startdate = date('Ymd', $start);
 				$starttime = date('h:i A', $start);
-				$enddate = date('Ymd', $end);
-				$endtime = date('h:i A', $end);
-				$calendar_id =  $val["event"]["event_instances"][0]["event_instance"]["id"];	
+				$end = '';
+				$enddate = '';
+				$endtime = '';
+				if ( isset( $val["event"]["event_instances"][0]["event_instance"]["end"] ) ) {
+					$end =  strtotime($val["event"]["event_instances"][0]["event_instance"]["end"]);
+					$enddate = date('Ymd', $end);
+					$endtime = date('h:i A', $end);
+				}
 			}
 			if (isset($val["event"]["localist_url"])) { 
 				$calendar_url =  $val["event"]["localist_url"];
@@ -181,7 +186,9 @@ static function pull_events( $confirm = false ) {
 				}
 				Pull_Events_Plugin::__update_post_meta( $post_id, 'event_date' , $startdate );
 				Pull_Events_Plugin::__update_post_meta( $post_id, 'event_start_time' , $starttime );	
-				Pull_Events_Plugin::__update_post_meta( $post_id,  'event_end_time' , $endtime );
+				if ( isset( $val["event"]["event_instances"][0]["event_instance"]["end"] ) ) {
+					Pull_Events_Plugin::__update_post_meta( $post_id,  'event_end_time' , $endtime );
+				}
 				Pull_Events_Plugin::__update_post_meta( $post_id,  'is_event' , '1' );
 				Pull_Events_Plugin::__update_post_meta( $post_id,  'calendar_url' , $calendar_url );
 				Pull_Events_Plugin::__update_post_meta( $post_id,  'calendar_id' , $calendar_id );
