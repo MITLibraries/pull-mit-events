@@ -3,7 +3,7 @@
 Plugin Name: Pull MIT Events
 Description: Pulls Events from calendar.mit.edu for the Libraries news site 
 Author: Hattie Llavina
-Version: 1.0
+Version: 1.0.1
 */
 
 
@@ -80,6 +80,14 @@ public function field_callback( $arguments ) {
 
 static function pull_events( $confirm = false ) {
 
+	/**
+	 * Before we do anything, make sure our timezone is set correctly based on
+	 * the site settings. Ideally we would store times and dates in their proper
+	 * format, but it was a legacy decision that they would be stored as
+	 * strings, rather than datetimes.
+	 */
+	date_default_timezone_set( get_option( 'timezone_string' ) );
+
 	$url = EVENTS_URL; 
 	$result = file_get_contents($url);
 	$events = json_decode($result, TRUE);
@@ -88,19 +96,23 @@ static function pull_events( $confirm = false ) {
 			if (isset($val["event"]["title"])) { 
 				$title =  $val["event"]["title"];
 				$slug = str_replace(" ", "-", $title);
-
 			}
 			if (isset($val["event"]["description_text"])) { 
 				$description = $val["event"]["description_text"];
 			}
 			if (isset($val["event"]["event_instances"][0]["event_instance"])) { 
+				$calendar_id =  $val["event"]["event_instances"][0]["event_instance"]["id"];
 				$start =  strtotime($val["event"]["event_instances"][0]["event_instance"]["start"]);
-				$end =  strtotime($val["event"]["event_instances"][0]["event_instance"]["end"]);
 				$startdate = date('Ymd', $start);
 				$starttime = date('h:i A', $start);
-				$enddate = date('Ymd', $end);
-				$endtime = date('h:i A', $end);
-				$calendar_id =  $val["event"]["event_instances"][0]["event_instance"]["id"];	
+				$end = '';
+				$enddate = '';
+				$endtime = '';
+				if ( isset( $val["event"]["event_instances"][0]["event_instance"]["end"] ) ) {
+					$end =  strtotime($val["event"]["event_instances"][0]["event_instance"]["end"]);
+					$enddate = date('Ymd', $end);
+					$endtime = date('h:i A', $end);
+				}
 			}
 			if (isset($val["event"]["localist_url"])) { 
 				$calendar_url =  $val["event"]["localist_url"];
@@ -174,7 +186,9 @@ static function pull_events( $confirm = false ) {
 				}
 				Pull_Events_Plugin::__update_post_meta( $post_id, 'event_date' , $startdate );
 				Pull_Events_Plugin::__update_post_meta( $post_id, 'event_start_time' , $starttime );	
-				Pull_Events_Plugin::__update_post_meta( $post_id,  'event_end_time' , $endtime );
+				if ( isset( $val["event"]["event_instances"][0]["event_instance"]["end"] ) ) {
+					Pull_Events_Plugin::__update_post_meta( $post_id,  'event_end_time' , $endtime );
+				}
 				Pull_Events_Plugin::__update_post_meta( $post_id,  'is_event' , '1' );
 				Pull_Events_Plugin::__update_post_meta( $post_id,  'calendar_url' , $calendar_url );
 				Pull_Events_Plugin::__update_post_meta( $post_id,  'calendar_id' , $calendar_id );
