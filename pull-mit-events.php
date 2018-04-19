@@ -156,7 +156,7 @@ class Pull_Events_Plugin {
 							}
 							error_log( $title . ': Updated' );
 						}					
-} else {
+					} else {
 
 						$post_id = wp_insert_post(
 							array(
@@ -194,7 +194,7 @@ class Pull_Events_Plugin {
 					Pull_Events_Plugin::__update_post_meta( $post_id,  'calendar_image' , $photo_url );
 
 				}			
-}
+			}
 		}
 	}
 
