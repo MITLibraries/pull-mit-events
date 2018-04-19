@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Pull MIT Events
-Description: Pulls Events from calendar.mit.edu for the Libraries news site 
+Description: Pulls Events from calendar.mit.edu for the Libraries news site
 Author: Hattie Llavina
 Version: 1.0.1
 */
@@ -11,9 +11,9 @@ defined( 'ABSPATH' ) or die();
 
 
 /* Fetch only library events and exclude exhibits.
-If no days specified, only current day returned.  
-If no  record count specified, only 10 records returned. 
-See https://developer.localist.com/doc/api 
+If no days specified, only current day returned.
+If no  record count specified, only 10 records returned.
+See https://developer.localist.com/doc/api
 */
 define( 'EVENTS_URL', get_option( 'pull_url_field' ) );
 
@@ -74,7 +74,7 @@ class Pull_Events_Plugin {
 
 	public function field_callback( $arguments ) {
 		echo '<input name="pull_url_field" id="pull_url_field" type="text" size="100" value="' . get_option( 'pull_url_field' ) . '" />';
-	  
+
 	}
 
 	/* Pulls events and either updates or inserts based on calendar ID field */
@@ -88,19 +88,19 @@ class Pull_Events_Plugin {
 		 */
 		date_default_timezone_set( get_option( 'timezone_string' ) );
 
-		$url = EVENTS_URL; 
+		$url = EVENTS_URL;
 		$result = file_get_contents( $url );
 		$events = json_decode( $result, TRUE );
 		foreach ($events['events'] as $val) {
-			if(is_array( $val )) {  
-				if (isset( $val['event']['title'] )) { 
+			if(is_array( $val )) {
+				if (isset( $val['event']['title'] )) {
 					$title =  $val['event']['title'];
 					$slug = str_replace( ' ', '-', $title );
 				}
-				if (isset( $val['event']['description_text'] )) { 
+				if (isset( $val['event']['description_text'] )) {
 					$description = $val['event']['description_text'];
 				}
-				if (isset( $val['event']['event_instances'][0]['event_instance'] )) { 
+				if (isset( $val['event']['event_instances'][0]['event_instance'] )) {
 					$calendar_id =  $val['event']['event_instances'][0]['event_instance']['id'];
 					$start =  strtotime( $val['event']['event_instances'][0]['event_instance']['start'] );
 					$startdate = date( 'Ymd', $start );
@@ -114,16 +114,16 @@ class Pull_Events_Plugin {
 						$endtime = date( 'h:i A', $end );
 					}
 				}
-				if (isset( $val['event']['localist_url'] )) { 
+				if (isset( $val['event']['localist_url'] )) {
 					$calendar_url =  $val['event']['localist_url'];
 				}
-				if (isset( $val['event']['photo_url'] )) { 
+				if (isset( $val['event']['photo_url'] )) {
 					$photo_url =  $val['event']['photo_url'];
-				} 
+				}
 				$category = 43;  //all news
 
-				if (isset( $calendar_id )) { 
-			
+				if (isset( $calendar_id )) {
+
 					$args = array(
 						'post_status'     => 'publish',
 						'numberposts'	=> -1,
@@ -150,18 +150,18 @@ class Pull_Events_Plugin {
 							foreach ($errors as $error) {
 								error_log( $error );
 							}
-						} else { 
-							if ( $confirm ) { 
+						} else {
+							if ( $confirm ) {
 								echo $title . ': Updated<br/>';
 							}
 							error_log( $title . ': Updated' );
 						}
-					
-					} else { 
+
+					} else {
 
 						$post_id = wp_insert_post(
 							array(
-								'comment_status'  => 'closed',		
+								'comment_status'  => 'closed',
 								'ping_status'   => 'closed',
 								'post_name'   => $slug,
 								'post_title'    => $title,
@@ -177,15 +177,15 @@ class Pull_Events_Plugin {
 							foreach ($errors as $error) {
 								error_log( $error );
 							}
-						} else { 
-							if ( $confirm ) { 
+						} else {
+							if ( $confirm ) {
 								echo $title . ': Inserted<br/>';
 							}
 							error_log( $title . ': Inserted' );
 						}
 					}
 					Pull_Events_Plugin::__update_post_meta( $post_id, 'event_date' , $startdate );
-					Pull_Events_Plugin::__update_post_meta( $post_id, 'event_start_time' , $starttime );	
+					Pull_Events_Plugin::__update_post_meta( $post_id, 'event_start_time' , $starttime );
 					if ( isset( $val['event']['event_instances'][0]['event_instance']['end'] ) ) {
 						Pull_Events_Plugin::__update_post_meta( $post_id,  'event_end_time' , $endtime );
 					}
