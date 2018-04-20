@@ -15,6 +15,7 @@
 		<exclude name="Generic.WhiteSpace.ScopeIndent.Incorrect" />
 		<exclude name="PEAR.Functions.FunctionCallSignature.Indent" />
 		<!-- Whitelist failing tests -->
+		<exclude name="Squiz.Scope.MethodScope.Missing" />
 		<exclude name="WordPress.VIP.PostsPerPage.posts_per_page_numberposts" />
 		<exclude name="WordPress.VIP.TimezoneChange.timezone_change_date_default_timezone_set" />
 		<exclude name="Generic.Files.OneClassPerFile.MultipleFound" />

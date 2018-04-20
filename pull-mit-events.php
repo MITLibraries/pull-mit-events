@@ -108,7 +108,7 @@ class Pull_Events_Plugin {
 	 *
 	 * @param Boolean $confirm A variable checked to make sure we should run the import.
 	 */
-	public static function pull_events( $confirm = false ) {
+	static function pull_events( $confirm = false ) {
 
 		/**
 		 * Before we do anything, make sure our timezone is set correctly based on
