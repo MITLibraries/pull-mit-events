@@ -94,31 +94,31 @@ class Pull_Events_Plugin {
 		foreach ( $events['events'] as $val ) {
 			if ( is_array( $val ) ) {
 				if ( isset( $val['event']['title'] ) ) {
-					$title =  $val['event']['title'];
+					$title = $val['event']['title'];
 					$slug = str_replace( ' ', '-', $title );
 				}
 				if ( isset( $val['event']['description_text'] ) ) {
 					$description = $val['event']['description_text'];
 				}
 				if ( isset( $val['event']['event_instances'][0]['event_instance'] ) ) {
-					$calendar_id =  $val['event']['event_instances'][0]['event_instance']['id'];
-					$start =  strtotime( $val['event']['event_instances'][0]['event_instance']['start'] );
+					$calendar_id = $val['event']['event_instances'][0]['event_instance']['id'];
+					$start = strtotime( $val['event']['event_instances'][0]['event_instance']['start'] );
 					$startdate = date( 'Ymd', $start );
 					$starttime = date( 'h:i A', $start );
 					$end = '';
 					$enddate = '';
 					$endtime = '';
 					if ( isset( $val['event']['event_instances'][0]['event_instance']['end'] ) ) {
-						$end =  strtotime( $val['event']['event_instances'][0]['event_instance']['end'] );
+						$end = strtotime( $val['event']['event_instances'][0]['event_instance']['end'] );
 						$enddate = date( 'Ymd', $end );
 						$endtime = date( 'h:i A', $end );
 					}
 				}
 				if ( isset( $val['event']['localist_url'] ) ) {
-					$calendar_url =  $val['event']['localist_url'];
+					$calendar_url = $val['event']['localist_url'];
 				}
 				if ( isset( $val['event']['photo_url'] ) ) {
-					$photo_url =  $val['event']['photo_url'];
+					$photo_url = $val['event']['photo_url'];
 				}
 				$category = 43;  //all news
 
