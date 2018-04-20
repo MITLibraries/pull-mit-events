@@ -252,7 +252,7 @@ class Pull_Events_Plugin {
 
 		if ( isset( $_GET['action'] ) ) {
 
-			if ( $_GET['page'] == 'pull_mit_events' && $_GET['action'] == 'pull-events' ) {
+			if ( 'pull_mit_events' == $_GET['page'] && 'pull-events' == $_GET['action'] ) {
 				 echo '<h2>Pull MIT Library Events</h2>';
 				Pull_Events_Plugin::pull_events( true );
 				exit;
