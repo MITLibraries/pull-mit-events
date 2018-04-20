@@ -120,7 +120,7 @@ class Pull_Events_Plugin {
 				if ( isset( $val['event']['photo_url'] ) ) {
 					$photo_url = $val['event']['photo_url'];
 				}
-				$category = 43;  //all news
+				$category = 43;  // all news
 
 				if ( isset( $calendar_id ) ) {
 
