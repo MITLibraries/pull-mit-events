@@ -90,7 +90,7 @@ class Pull_Events_Plugin {
 
 		$url = EVENTS_URL;
 		$result = file_get_contents( $url );
-		$events = json_decode( $result, TRUE );
+		$events = json_decode( $result, true );
 		foreach ( $events['events'] as $val ) {
 			if ( is_array( $val ) ) {
 				if ( isset( $val['event']['title'] ) ) {
@@ -143,7 +143,7 @@ class Pull_Events_Plugin {
 								'ping_status'   => 'closed',
 								'post_title'    => $title,
 								'post_description'    => $description,
-							), True
+							), true
 						);
 						if ( is_wp_error( $post_id ) ) {
 							$errors = $post_id->get_error_messages();
@@ -168,7 +168,7 @@ class Pull_Events_Plugin {
 								'post_status'   => 'publish',
 								'post_type'   => 'post',
 								'post_category' => array($category),
-							), True
+							), true
 						);
 
 						if ( is_wp_error( $post_id ) ) {
