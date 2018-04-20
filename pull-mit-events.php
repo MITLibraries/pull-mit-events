@@ -93,6 +93,7 @@ class Pull_Events_Plugin {
 	public function setup_fields() {
 		$field = array(
 			'id' => 'pull_url_field',
+			'label_for' => 'pull_url_field',
 		);
 		add_settings_field( $field['id'], 'Pull Events URL:', array( $this, 'field_callback' ), 'pull_mit_events', 'url_section', $field );
 	}
