@@ -155,7 +155,7 @@ class Pull_Events_Plugin {
 								echo $title . ': Updated<br/>';
 							}
 							error_log( $title . ': Updated' );
-						}                   
+						}
 					} else {
 
 						$post_id = wp_insert_post(
@@ -193,7 +193,7 @@ class Pull_Events_Plugin {
 					Pull_Events_Plugin::__update_post_meta( $post_id, 'calendar_id', $calendar_id );
 					Pull_Events_Plugin::__update_post_meta( $post_id, 'calendar_image', $photo_url );
 
-				}           
+				}
 			}
 		}
 	}
