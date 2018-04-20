@@ -9,7 +9,7 @@
  * @since 1.0.0
  */
 
-defined( 'ABSPATH' ) or die();
+defined( 'ABSPATH' ) || die();
 
 
 /**
@@ -236,7 +236,7 @@ class Pull_Events_Plugin {
 	 * @param String  $value The value of the meta field to be stored.
 	 */
 	static function __update_post_meta( $post_id, $field_name, $value = '' ) {
-		if ( empty( $value ) or ! $value ) {
+		if ( empty( $value ) || ! $value ) {
 			delete_post_meta( $post_id, $field_name );
 		} elseif ( ! get_post_meta( $post_id, $field_name ) ) {
 			add_post_meta( $post_id, $field_name, $value );
