@@ -167,7 +167,7 @@ class Pull_Events_Plugin {
 								'post_description'    => $description,
 								'post_status'   => 'publish',
 								'post_type'   => 'post',
-								'post_category' => array($category),
+								'post_category' => array( $category ),
 							), true
 						);
 
