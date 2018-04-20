@@ -130,7 +130,7 @@ class Pull_Events_Plugin {
 						'post_type'     => 'post',
 						'meta_key'      => 'calendar_id',
 						'meta_value'    => $calendar_id,
-						);
+					);
 					query_posts( $args );
 
 					if ( have_posts() ) {
