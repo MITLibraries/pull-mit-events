@@ -17,7 +17,6 @@
 		<!-- Whitelist failing tests -->
 		<exclude name="Generic.Files.OneClassPerFile.MultipleFound" />
 		<exclude name="PSR2.Files.ClosingTag.NotAllowed" />
-		<exclude name="Squiz.Scope.MethodScope.Missing" />
 		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
 	</rule>
 </ruleset>

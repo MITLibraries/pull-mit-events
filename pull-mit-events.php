@@ -52,7 +52,7 @@ class Pull_Events_Plugin {
 	 *
 	 * @link https://codex.wordpress.org/Function_Reference/wp_clear_scheduled_hook
 	 */
-	function my_deactivation() {
+	public function my_deactivation() {
 		wp_clear_scheduled_hook( 'daily_event_pull' );
 	}
 
@@ -61,7 +61,7 @@ class Pull_Events_Plugin {
 	 *
 	 * @link https://codex.wordpress.org/Function_Reference/wp_schedule_event
 	 */
-	function my_activation() {
+	public function my_activation() {
 		wp_schedule_event( time(), 'hourly', 'daily_event_pull' );
 	}
 
@@ -83,7 +83,7 @@ class Pull_Events_Plugin {
 	/**
 	 * Defines a section within the settings page.
 	 */
-	function setup_sections() {
+	public function setup_sections() {
 		add_settings_section( 'url_section', 'Configure Events Pull', false, 'pull_mit_events' );
 	}
 
@@ -108,7 +108,7 @@ class Pull_Events_Plugin {
 	 *
 	 * @param Boolean $confirm A variable checked to make sure we should run the import.
 	 */
-	static function pull_events( $confirm = false ) {
+	public static function pull_events( $confirm = false ) {
 
 		/**
 		 * Before we do anything, make sure our timezone is set correctly based on
@@ -235,7 +235,7 @@ class Pull_Events_Plugin {
 	 * @param String  $field_name The name of the meta field being updated.
 	 * @param String  $value The value of the meta field to be stored.
 	 */
-	static function __update_post_meta( $post_id, $field_name, $value = '' ) {
+	public static function __update_post_meta( $post_id, $field_name, $value = '' ) {
 		if ( empty( $value ) || ! $value ) {
 			delete_post_meta( $post_id, $field_name );
 		} elseif ( ! get_post_meta( $post_id, $field_name ) ) {
@@ -248,7 +248,7 @@ class Pull_Events_Plugin {
 	/**
 	 * Defines the settings page content.
 	 */
-	function plugin_settings_page_content() {
+	public function plugin_settings_page_content() {
 
 		if ( isset( $_GET['action'] ) ) {
 
