@@ -12,23 +12,28 @@
 defined( 'ABSPATH' ) or die();
 
 
-/*
- Fetch only library events and exclude exhibits.
-If no days specified, only current day returned.
-If no  record count specified, only 10 records returned.
-See https://developer.localist.com/doc/api
-*/
+/**
+ * Fetch only library events and exclude exhibits.
+ * If no days specified, only current day returned.
+ * If no  record count specified, only 10 records returned.
+ * See https://developer.localist.com/doc/api
+ *
+ * Reference URL: https://calendar.mit.edu/api/2/events?pp=500&group_id=11497&exclude_type=102763&days=365
+ */
 define( 'EVENTS_URL', get_option( 'pull_url_field' ) );
 
 
-
-
+/**
+ * Pull_Events_Plugin is the class that controls everything.
+ */
 class Pull_Events_Plugin {
 
 
-
+	/**
+	 * The constructor defines the admin screens, settings, and hooks.
+	 */
 	public function __construct() {
-		// Hook into the admin menu
+		// Hook into the admin menu.
 		add_action( 'admin_menu', array( $this, 'create_plugin_settings_page' ) );
 
 		add_action( 'daily_event_pull', 'pull_events' );
@@ -42,17 +47,28 @@ class Pull_Events_Plugin {
 
 	}
 
+	/**
+	 * Implements the deactivation hook.
+	 *
+	 * @link https://codex.wordpress.org/Function_Reference/wp_clear_scheduled_hook
+	 */
 	function my_deactivation() {
 		wp_clear_scheduled_hook( 'daily_event_pull' );
 	}
 
+	/**
+	 * Implements the plugin activation hook.
+	 *
+	 * @link https://codex.wordpress.org/Function_Reference/wp_schedule_event
+	 */
 	function my_activation() {
 		wp_schedule_event( time(), 'hourly', 'daily_event_pull' );
 	}
 
-
+	/**
+	 * Defines the plugin's settings page and menu item.
+	 */
 	public function create_plugin_settings_page() {
-		// Add the menu item and page
 		$page_title = 'Pull Events Settings Page';
 		$menu_title = 'Pull MIT Events';
 		$capability = 'manage_options';
@@ -64,23 +80,34 @@ class Pull_Events_Plugin {
 		add_menu_page( $page_title, $menu_title, $capability, $slug, $callback, $icon, $position );
 	}
 
-
-
+	/**
+	 * Defines a section within the settings page.
+	 */
 	function setup_sections() {
 		add_settings_section( 'url_section', 'Configure Events Pull', false, 'pull_mit_events' );
 	}
 
+	/**
+	 * Defines the settings field that stores the URL we poll for calendar events.
+	 */
 	public function setup_fields() {
 		add_settings_field( 'pull_url_field', 'Pull Events URL:', array( $this, 'field_callback' ), 'pull_mit_events', 'url_section' );
 	}
 
-
+	/**
+	 * Rendering callback for the settings field.
+	 *
+	 * @param Array $arguments Arguments sent by setup_fields().
+	 */
 	public function field_callback( $arguments ) {
 		echo '<input name="pull_url_field" id="pull_url_field" type="text" size="100" value="' . get_option( 'pull_url_field' ) . '" />';
-
 	}
 
-	/* Pulls events and either updates or inserts based on calendar ID field */
+	/**
+	 * Pulls events and either updates or inserts based on calendar ID field.
+	 *
+	 * @param Boolean $confirm A variable checked to make sure we should run the import.
+	 */
 	static function pull_events( $confirm = false ) {
 
 		/**
@@ -123,7 +150,7 @@ class Pull_Events_Plugin {
 				if ( isset( $val['event']['photo_url'] ) ) {
 					$photo_url = $val['event']['photo_url'];
 				}
-				$category = 43;  // all news
+				$category = 43;  // 43 is the value for "All News".
 
 				if ( isset( $calendar_id ) ) {
 
@@ -201,7 +228,13 @@ class Pull_Events_Plugin {
 		}
 	}
 
-
+	/**
+	 * Method to update a single meta field for a single post.
+	 *
+	 * @param Integer $post_id The Post ID.
+	 * @param String  $field_name The name of the meta field being updated.
+	 * @param String  $value The value of the meta field to be stored.
+	 */
 	static function __update_post_meta( $post_id, $field_name, $value = '' ) {
 		if ( empty( $value ) or ! $value ) {
 			delete_post_meta( $post_id, $field_name );
@@ -212,7 +245,9 @@ class Pull_Events_Plugin {
 		}
 	}
 
-
+	/**
+	 * Defines the settings page content.
+	 */
 	function plugin_settings_page_content() {
 
 		if ( isset( $_GET['action'] ) ) {
