@@ -185,7 +185,7 @@ class Pull_Events_Plugin {
 							}
 						} else {
 							if ( $confirm ) {
-								echo $title . ': Updated<br/>';
+								echo esc_html( $title ) . ': Updated<br/>';
 							}
 							error_log( $title . ': Updated' );
 						}
@@ -211,7 +211,7 @@ class Pull_Events_Plugin {
 							}
 						} else {
 							if ( $confirm ) {
-								echo $title . ': Inserted<br/>';
+								echo esc_html( $title ) . ': Inserted<br/>';
 							}
 							error_log( $title . ': Inserted' );
 						}
@@ -285,7 +285,7 @@ class Pull_Events_Plugin {
 
 		</form>
 
-		<form method="post" action="<?php echo admin_url( 'admin.php?page=pull_mit_events&action=pull-events' ); ?>">
+		<form method="post" action="<?php echo esc_url( admin_url( 'admin.php?page=pull_mit_events&action=pull-events' ) ); ?>">
 			
 		<h2>Do it now:</h2> 
 
