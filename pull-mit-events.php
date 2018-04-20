@@ -91,7 +91,10 @@ class Pull_Events_Plugin {
 	 * Defines the settings field that stores the URL we poll for calendar events.
 	 */
 	public function setup_fields() {
-		add_settings_field( 'pull_url_field', 'Pull Events URL:', array( $this, 'field_callback' ), 'pull_mit_events', 'url_section' );
+		$field = array(
+			'id' => 'pull_url_field',
+		);
+		add_settings_field( $field['id'], 'Pull Events URL:', array( $this, 'field_callback' ), 'pull_mit_events', 'url_section', $field );
 	}
 
 	/**
@@ -100,7 +103,7 @@ class Pull_Events_Plugin {
 	 * @param Array $arguments Arguments sent by setup_fields().
 	 */
 	public function field_callback( $arguments ) {
-		echo '<input name="pull_url_field" id="pull_url_field" type="text" size="100" value="' . get_option( 'pull_url_field' ) . '" />';
+		echo '<input name="' . esc_attr( $arguments['id'] ) . '" id="' . esc_attr( $arguments['id'] ) . '" type="text" size="100" value="' . esc_attr( get_option( 'pull_url_field' ) ) . '" />';
 	}
 
 	/**
