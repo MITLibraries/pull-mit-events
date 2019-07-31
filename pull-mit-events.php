@@ -2,8 +2,8 @@
 /*
 Plugin Name: Pull MIT Events
 Description: Pulls Events from calendar.mit.edu for the Libraries news site 
-Author: Hattie Llavina
-Version: 1.0.1
+Author: Hattie Llavina and Matt Bernhardt
+Version: 1.0.2
 */
 
 
@@ -73,7 +73,7 @@ public function setup_fields() {
 
 
 public function field_callback( $arguments ) {
-	echo '<input name="pull_url_field" id="pull_url_field" type="text" size="100" value="' . get_option( 'pull_url_field' ) . '" />';
+	echo '<input name="pull_url_field" id="pull_url_field" type="text" size="100" value="' . esc_url ( get_option( 'pull_url_field' ) ) . '" />';
   
 }
 /* Pulls events and either updates or inserts based on calendar ID field */
@@ -152,7 +152,7 @@ static function pull_events( $confirm = false ) {
 						}
 					} else { 
 						if ( $confirm ) { 
-							echo $title . ": Updated<br/>";
+							echo esc_html( $title ) . ": Updated<br/>";
 						}
 						error_log($title . ": Updated");
 					}
@@ -179,7 +179,7 @@ static function pull_events( $confirm = false ) {
 						}
 					} else { 
 						if ( $confirm ) { 
-							echo $title . ": Inserted<br/>";
+							echo esc_html( $title ) . ": Inserted<br/>";
 						}
 						error_log($title . ": Inserted");
 			  		}
@@ -220,7 +220,7 @@ static function __update_post_meta( $post_id, $field_name, $value = '' )
 
 	function plugin_settings_page_content() {
 
-		if (isset($_GET['action']) ) {
+		if ( isset( $_GET['page'] ) && isset( $_GET['action'] ) ) {
 
 			if ($_GET['page'] == "pull_mit_events" && $_GET['action'] == "pull-events" ) {
 				 echo "<h2>Pull MIT Library Events</h2>";
@@ -252,7 +252,7 @@ static function __update_post_meta( $post_id, $field_name, $value = '' )
 
         </form>
 
-		<form method="post" action="<?php echo admin_url("admin.php?page=pull_mit_events&action=pull-events"); ?>">
+		<form method="post" action="<?php echo esc_url( admin_url( "admin.php?page=pull_mit_events&action=pull-events" ) ); ?>">
 			
 		<h2>Do it now:</h2> 
 
